@@ -3,7 +3,7 @@ from flask import Flask, jsonify, send_file
 from PIL import Image
 from io import BytesIO
 import os
-import fruit_classifier
+import detection
 
 app = Flask(__name__)
 ip_path = 'http://192.168.121.17'
@@ -70,14 +70,14 @@ def get_image():
 @app.route('/groceries')
 def get_groceries():
     try:
-        # response = requests.get(ip_path + '/camera')
+        response = requests.get(ip_path + '/camera')
 
-        # img = Image.open(BytesIO(response.content))
-        # img_path = os.path.abspath('Desktop/fridge_images/original.jpeg')
-        # img.save(img_path)
+        img = Image.open(BytesIO(response.content))
+        img_path = os.path.abspath('./Desktop/laptop_server/fridge_images/original.jpeg')
+        img.save(img_path)
 
         # RUN MACHINE LEARNING CODE
-        food = fruit_classifier.makeBoundingBoxes()
+        food = detection.detect_objects()
         print(food)
         print(sum(food.values()))
         result = []
